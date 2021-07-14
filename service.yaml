@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-deployment-new
+  name: spring-deployment-new
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: spring-deployment-new
+  type: ClusterIP
+status:
+  loadBalancer: {}

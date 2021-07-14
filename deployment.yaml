@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-deployment-new
+  name: spring-deployment-new-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-deployment-new
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-deployment-new
+    spec:
+      containers:
+      - image: jaikratsingh/spring-boot-k8s:first-spring-image
+        name: spring-boot-k8s
+        ports: #for AWS
+          - containerPort: 8080 #for aws
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-deployment-new
+  name: spring-deployment-new-service
+spec:
+  ports:
+    #- name: 8080-8080
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: spring-deployment-new
+  #type: ClusterIP
+  type: NodePort
+status:
+  loadBalancer: {}
+---
+# Annotations Reference:  https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/
+#apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spring-deployment-new-ingress
+  labels:
+    app: spring-deployment-new
+  annotations:
+    # Ingress Core Settings
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: "spring-deployment-new-service"
+              servicePort: 8080
