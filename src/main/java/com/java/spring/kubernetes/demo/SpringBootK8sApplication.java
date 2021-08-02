@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
-@Service
-@Component
 public class SpringBootK8sApplication {
 
     @Autowired
