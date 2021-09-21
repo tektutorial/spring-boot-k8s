@@ -1,0 +1,19 @@
+# Annotations Reference:  https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-boot-service-ingress
+  namespace: kuma-demo
+  annotations:
+    kubernetes.io/ingress.class: "kong"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-deployment-new-service
+                port:
+                  number: 8085
