@@ -1,0 +1,210 @@
+_format_version: "1.1"
+consumers:
+- custom_id: jaikrat-id
+  keyauth_credentials:
+  - key: apikey
+  username: jaikrat
+- custom_id: jaikrat-id-new
+  username: jaikrat-new
+plugins:
+- config:
+    cache_control: false
+    cache_ttl: 30
+    content_type:
+    - text/plain
+    - application/json;charset=utf-8
+    memory:
+      dictionary_name: kong_db_cache
+    request_method:
+    - GET
+    - HEAD
+    response_code:
+    - 200
+    - 301
+    - 404
+    storage_ttl: null
+    strategy: memory
+    vary_headers: null
+    vary_query_params: null
+  enabled: true
+  name: proxy-cache
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+services:
+- connect_timeout: 60000
+  host: gateway.docker.internal
+  name: Registration-API
+  path: /registrationDone
+  port: 8089
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 301
+    methods:
+    - POST
+    name: Registration
+    path_handling: v0
+    paths:
+    - /register
+    preserve_host: false
+    protocols:
+    - http
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  host: example.com
+  name: demo-service
+  plugins:
+  - config:
+      X_Auth_Token: "true"
+    enabled: true
+    name: check-x-header
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: demo-route
+    path_handling: v0
+    paths:
+    - /example
+    preserve_host: false
+    protocols:
+    - http
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  host: localhost
+  name: spring-boot-docker
+  path: /hello
+  port: 8089
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: spring-boot-docker-route
+    path_handling: v0
+    paths:
+    - /docker-hello
+    preserve_host: false
+    protocols:
+    - http
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  host: upstream
+  name: spring-boot-k8s
+  path: /hello
+  port: 8089
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    methods:
+    - GET
+    name: hello-route
+    path_handling: v0
+    paths:
+    - /hello
+    - /jaik
+    preserve_host: false
+    protocols:
+    - http
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+upstreams:
+- algorithm: round-robin
+  hash_fallback: none
+  hash_on: none
+  hash_on_cookie_path: /
+  healthchecks:
+    active:
+      concurrency: 10
+      healthy:
+        http_statuses:
+        - 200
+        - 302
+        interval: 0
+        successes: 0
+      http_path: /
+      https_verify_certificate: true
+      timeout: 1
+      type: http
+      unhealthy:
+        http_failures: 0
+        http_statuses:
+        - 429
+        - 404
+        - 500
+        - 501
+        - 502
+        - 503
+        - 504
+        - 505
+        interval: 0
+        tcp_failures: 0
+        timeouts: 0
+    passive:
+      healthy:
+        http_statuses:
+        - 200
+        - 201
+        - 202
+        - 203
+        - 204
+        - 205
+        - 206
+        - 207
+        - 208
+        - 226
+        - 300
+        - 301
+        - 302
+        - 303
+        - 304
+        - 305
+        - 306
+        - 307
+        - 308
+        successes: 0
+      type: http
+      unhealthy:
+        http_failures: 0
+        http_statuses:
+        - 429
+        - 500
+        - 503
+        tcp_failures: 0
+        timeouts: 0
+    threshold: 0
+  name: upstream
+  slots: 10000
+  targets:
+  - target: example.com:8000
+    weight: 50
+  - target: mockbin.org:8000
+    weight: 50
