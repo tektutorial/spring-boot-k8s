@@ -10,8 +10,8 @@ spec:
   rules:
     - http:
         paths:
-          - path: "/"
-            pathType: Prefix
+          - pathType: Prefix
+            path: "/"
             backend:
               service:
                 name: spring-deployment-new-service
