@@ -23,7 +23,7 @@ public class SpringBootK8sApplication {
 
     @GetMapping("/hello")
     public String sayHello1(){
-        return "Hello From Spring and Kuberneted example";
+        return "Hello From Spring and Kuberneted example-updated";
     }
 
     @GetMapping("/mul")

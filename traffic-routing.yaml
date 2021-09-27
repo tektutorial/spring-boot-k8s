@@ -1,0 +1,22 @@
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+mesh: default
+metadata:
+  name: split-traffic
+spec:
+  sources:
+    - match:
+        kuma.io/service: kong-proxy_kuma-gateway_svc_80
+  destinations:
+    - match:
+        kuma.io/service: spring-deployment-new-service_kuma-demo3_svc_8085
+  conf:
+    split:
+      - weight: 50
+        destination:
+          kuma.io/service: spring-deployment-new-service_kuma-demo3_svc_8085
+          version: 'v0'
+      - weight: 50
+        destination:
+          kuma.io/service: spring-deployment-new-service_kuma-demo3_svc_8085
+          version: 'v1'
