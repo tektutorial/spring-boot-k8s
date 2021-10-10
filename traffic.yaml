@@ -2,11 +2,12 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficPermission
 mesh: default
 metadata:
-  name: allow-all-traffic
+  name: spring-boot-traffic-rules
+  namespace: kuma-demo4
 spec:
   sources:
     - match:
-        kuma.io/service: '*'
+        kuma.io/service: kong-proxy_kuma-gateway_svc_80
   destinations:
     - match:
-        kuma.io/service: '*'
+        kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085

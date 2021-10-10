@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
 @SpringBootApplication
 @RestController
 public class SpringBootK8sApplication {
@@ -17,22 +20,24 @@ public class SpringBootK8sApplication {
     }
 
     @GetMapping("/push")
-    public String sayHello(){
+    public String sayHello() {
         return "Hello From Spring and Kuberneted example";
     }
 
     @GetMapping("/hello")
-    public String sayHello1(){
-        return "Hello From Spring and Kuberneted example-updated";
+    public String sayHello1(@RequestHeader Map<String, String> headers,
+                            HttpServletResponse response) {
+       //response.addHeader("x-header", headers.get("x-header"));
+        return "Hello From Spring and Kuberneted example-with V8";
     }
 
-    @GetMapping("/mul")
-    public Integer sayHello1(@RequestParam Integer first, @RequestParam Integer second){
-        return first * second;
+    @GetMapping("/add")
+    public Integer sayHello1(@RequestParam Integer first, @RequestParam Integer second) {
+        return first + second;
     }
 
     @PostMapping("/hello")
-    public String sayHello2(@RequestBody Person person){
+    public String sayHello2(@RequestBody Person person) {
         System.out.println(person.getName() + " - " + person.getAge());
         return "Hello From Spring and Kuberneted example";
     }

@@ -2,7 +2,7 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficRoute
 mesh: default
 metadata:
-  name: general-traffic
+  name: split-traffic
   namespace: kuma-demo4
 spec:
   sources:
@@ -12,9 +12,15 @@ spec:
     - match:
         kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
   conf:
-    destination:
-      kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
-      version: v0
+    split:
+      - weight: 10
+        destination:
+          kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
+          version: 'v0'
+      - weight: 90
+        destination:
+          kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
+          version: 'v1'
 #    loadBalancer:
 #      roundRobin: { }
 #    destination:

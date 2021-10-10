@@ -2,7 +2,7 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficRoute
 mesh: default
 metadata:
-  name: general-traffic
+  name: http-traffic-specific
   namespace: kuma-demo4
 spec:
   sources:
@@ -12,10 +12,13 @@ spec:
     - match:
         kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
   conf:
+    http:
+      - match:
+          path:
+            prefix: "/hello"
+        destination:
+          kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
+          version: 'v0'
     destination:
       kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
-      version: v0
-#    loadBalancer:
-#      roundRobin: { }
-#    destination:
-#      kuma.io/service: '*'
+      version: 'v1'
