@@ -98,7 +98,7 @@ data:
         - "/mockbin"
       plugins:
       - name: basic-auth
-    - url: "http://localhost:9085/hello"
+    - url: "http://spring-deployment-new-service.default.svc:8085"
       routes:
       - paths:
         - "/"
