@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: spring-boot-service-ingress
-  namespace: kuma-demo4
+  #namespace: kuma-demo7
   #annotations:
     #kubernetes.io/ingress.class: "kong"
 spec:
