@@ -10,6 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * Docker command to run this spring boot application
+ * Make image - docker build --tag spring-boot .
+ * Run the container - docker run -p 8080:8085 -t spring-boot
+ */
+
 @SpringBootApplication
 @RestController
 public class SpringBootK8sApplication {
