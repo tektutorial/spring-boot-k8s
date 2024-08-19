@@ -1,6 +1,20 @@
 package com.java.spring.kubernetes.demo;
 
+import org.springframework.boot.autoconfigure.gson.GsonProperties;
+
 public class Person {
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    Car car ;
+
+
     public String getName() {
         return name;
     }

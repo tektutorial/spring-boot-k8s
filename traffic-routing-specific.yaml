@@ -3,22 +3,22 @@ kind: TrafficRoute
 mesh: default
 metadata:
   name: http-traffic-specific
-  namespace: kuma-demo4
+  namespace: kuma-demo7
 spec:
   sources:
     - match:
         kuma.io/service: kong-proxy_kuma-gateway_svc_80
   destinations:
     - match:
-        kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
+        kuma.io/service: spring-deployment-new-service_kuma-demo7_svc_8085
   conf:
     http:
       - match:
           path:
             prefix: "/hello"
         destination:
-          kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
+          kuma.io/service: spring-deployment-new-service_kuma-demo7_svc_8085
           version: 'v0'
     destination:
-      kuma.io/service: spring-deployment-new-service_kuma-demo4_svc_8085
+      kuma.io/service: spring-deployment-new-service_kuma-demo7_svc_8085
       version: 'v1'
